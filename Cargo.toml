@@ -1,0 +1,15 @@
+[package]
+name = "ddns-rust"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+curl = "0.4.44"
+json = "0.12.4"
+local-ip-address = "0.4.5"
+
+[dependencies.clap]
+version="3.2.15"
+features=["derive"]
