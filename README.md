@@ -40,20 +40,26 @@ Description=An DDNS client written in Rust
 [Service]
 Type=oneshot
 ExecStart=/PATH/TO/ddns-rust -i YOUR_INTERFACE_NAME -s YOUR_SUB_DOMAIN_NAME -d YOUR_DOMAIN_NAME --dnspod-id YOUR_DNSPOD_ID --dnspod-token YOUR_DNSPOD_TOKEN
-
-[Install]
-WantedBy=multi-user.target
 ```
 
 Notice: The ExecStart should be like this ( If your target domain is `dr.example.com` ): `/usr/bin/ddns-rust -i wlan0 -s dr -d example.com --dnspod-id 472841 --dnspod-token 28374619272018592105e19f2a789307a`
 
+Then create and edit '/usr/lib/systemd/system/ddns-rust.timer` like this:
+
+```
+[Unit]
+Description=Run ddns-rust daily
+
+[Timer]
+OnCalendar=daily
+Persistent=true
+
+[Install]
+WantedBy=timers.target
+```
+
 7. Type `sudo systemctl start ddns-rust` in your terminal and run. There will not be any output; Have a check on DNSPod, the record should be updated ( Make sure that you had added an AAAA record )
 
-8. Run `sudo crontab -u root- e` and type them:
-```
-@hourly systemctl start ddns-rust
-```
+8. Run `sudo systemctl enable ddns-rust.timer`.
 
 9. Now, enjoy DDNS-Rust!
-
-Hmm, it seems OK if you skip the service part, and use crontab immediately. I will try it later.
